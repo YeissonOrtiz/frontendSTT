@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const url = 'https://rickandmortyapi.com/api/character';
+const URL = 'https://rickandmortyapi.com/api/character';
 
 const getAllCharacters = async (params) => {
   try {
-    const response = await axios.get(url, { params });
+    const response = await axios.get(URL, { params });
     return response.data;
   } catch (error) {
     throw Error(error);
@@ -13,7 +13,7 @@ const getAllCharacters = async (params) => {
 
 const getOneCharacter = async (id) => {
   try {
-    const response = await axios.get(`${url}/${id}`);
+    const response = await axios.get(`${URL}/${id}`);
     return response.data;
   } catch (error) {
     throw Error(error)
