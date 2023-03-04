@@ -1,10 +1,13 @@
 <template>
   <section class="flex flex-row flex-wrap justify-between items-center w-4/5 gap-10">
-    <div class="flex flex-row justify-between items-center w-full">
-      <button @click="previousPage" :disabled="currentPage === 1" class="inline-block px-4 py-2 text-white w-max bg-transparent">← Previous</button>
-      <div class="text-white"><b>{{ currentPage }} / {{ totalPages }}</b></div>
-      <button @click="nextPage" :disabled="currentPage === totalPages" class="inline-block px-4 py-2 text-white w-max bg-transparent">Next →</button>
-    </div>
+    <SliderPages
+      :currentPage="currentPage"
+      :totalPages="totalPages"
+      :disablePrevious="currentPage === 1"
+      :disableNext="currentPage === totalPages"
+      @previousPage="previousPage"
+      @nextPage="nextPage"
+    />
     <Card v-for="character in characters" :key="character.id" 
       :name="character.name" 
       :image_src="character.image" 
@@ -20,10 +23,12 @@
 
 <script>
 import Card from "../organisms/Card.vue";
-import { getAllCharacters } from "../../data/data";
+import { getAllCharacters } from "../../data/apiRickAndMorty";
+import SliderPages from "../molecules/SliderPages.vue";
 
 export default {
   name: "CardsContainer",
+  components: { Card, SliderPages },
   data() {
     return {
       characters: [],
@@ -42,12 +47,11 @@ export default {
       this.currentPage = page;
     },
     async previousPage() {
-      await this.updateData(this.currentPage - 1);
+      await this.updateData(--this.currentPage);
     },
     async nextPage() {
-      await this.updateData(this.currentPage + 1);
+      await this.updateData(++this.currentPage);
     },
   },
-  components: { Card },
 };
 </script>

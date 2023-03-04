@@ -8,77 +8,83 @@
       <Paragraph><b>Estado:</b> {{ status }}</Paragraph>
       <Paragraph><b>Genero:</b> {{ gender }}</Paragraph>
       <Paragraph><b>Ubicación:</b> {{ location }}</Paragraph>
+      <Paragraph><b>Comentarios:</b> {{ comments }}</Paragraph>
     </div>
     <RouterLink :to="{name: 'character', params: {id: id}}" class="inline-block px-4 py-2 text-white w-max bg-blue-500 rounded hover:bg-blue-600">Ver más</RouterLink>
   </div>
 </template>
 <script>
-  import Image from '../atoms/Image.vue';
-  import Heading from '../atoms/Heading.vue';
-  import Paragraph from '../atoms/Paragraph.vue';
-  import Link from '../atoms/Link.vue';
-  import { RouterLink } from 'vue-router';
+import Image from '../atoms/Image.vue';
+import Heading from '../atoms/Heading.vue';
+import Paragraph from '../atoms/Paragraph.vue';
+import Link from '../atoms/Link.vue';
+import { RouterLink } from 'vue-router';
+import { getAllCommentsByCharacter } from "../../data/apiLocal";
 
-  export default {
-    name: "Card",
-    components: {
-    Image,
-    Link,
-    Paragraph
+export default {
+  name: "Card",
+  components: {
+  Image,
+  Link,
+  Paragraph
+  },
+  data() {
+    return {
+      visibleInfo: false,
+      comments: 0,
+    };
+  },
+  async mounted() {
+    await this.getCommentsByCharacter(this.id);
+  },
+  methods: {
+    toggleVisible() {
+      this.visibleInfo = !this.visibleInfo;
     },
-    data() {
-      return {
-        visibleInfo: false,
-      };
+    async getCommentsByCharacter(id) {
+      const data = await getAllCommentsByCharacter(id);
+      this.comments = data.length;
     },
-    methods: {
-      toggleVisible() {
-        this.visibleInfo = !this.visibleInfo;
-      },
+  },
+  props: {
+    id: {
+      type: Number,
+      required: true,
     },
-    props: {
-      id: {
-        type: Number,
-        required: true,
-      },
-      name: {
-        type: String,
-        required: true,
-      },
-      image_src: {
-        type: String,
-        required: true,
-      },
-      status: {
-        type: String,
-        required: true,
-      },
-      species: {
-        type: String,
-        required: true,
-      },
-      species: {
-        type: String,
-        required: true,
-      },
-      gender: {
-        type: String,
-        required: true,
-      },
-      location: {
-        type: String,
-        required: true,
-      },
-      comments: {
-        type: String,
-        required: true,
-      },
-      link: {
-        type: String,
-        required: true
-      }
+    name: {
+      type: String,
+      required: true,
+    },
+    image_src: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+    },
+    species: {
+      type: String,
+      required: true,
+    },
+    species: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    link: {
+      type: String,
+      required: true
     }
   }
+}
 </script>
 <style>
   .card{
